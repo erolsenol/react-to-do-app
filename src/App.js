@@ -1,23 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+
+import Header from "./components/Header";
+import User from "./components/User";
+
+const name = "Erol";
+const surName = "Senol";
+const isLogin = true;
+const age = 26;
+
+const friends = [
+  { name: "Ahmet" },
+  { name: "ayse" },
+  { name: "fatma" },
+  { name: "ali" },
+  { name: "veli" },
+  { name: "mehmet" },
+];
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header name="Header" />
+
+      <User
+        name={name}
+        surName={surName}
+        isLogin={isLogin}
+        age={age}
+        friends={friends}
+        adress={{
+          title: "Pendik/İstanbul",
+          zip: 34777,
+        }}
+      />
     </div>
   );
 }
