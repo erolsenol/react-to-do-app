@@ -1,26 +1,37 @@
 import "./App.css";
 
+import { useState } from "react";
+
 import Header from "./components/Header";
 import User from "./components/User";
 
-const name = "Erol";
-const surName = "Senol";
 const isLogin = true;
-const age = 26;
-
-const friends = [
-  { name: "Ahmet" },
-  { name: "ayse" },
-  { name: "fatma" },
-  { name: "ali" },
-  { name: "veli" },
-  { name: "mehmet" },
-];
 
 function App() {
+  const [name, setName] = useState("Erol");
+  const [surName] = useState("Senol");
+  const [age, setAge] = useState(26);
+  const [friends, setFriends] = useState([]);
+  const [newFriend, setNewFriend] = useState("");
+
+  const handleChange = (event) => {
+    setNewFriend(event.target.value);
+
+    console.log("value is:", event.target.value);
+  };
+
   return (
     <div className="App">
       <Header name="Header" />
+
+      <button
+        onClick={() => {
+          setName("Ahmet");
+          setAge(age + 1);
+        }}
+      >
+        Change Name
+      </button>
 
       <User
         name={name}
@@ -33,6 +44,19 @@ function App() {
           zip: 34777,
         }}
       />
+
+      <label htmlFor="newFriend">
+        New friend:
+        <input type="text" onChange={handleChange} value={newFriend}></input>
+        <button
+          onClick={() => {
+            setFriends([...friends, { name: newFriend }]);
+            setNewFriend("");
+          }}
+        >
+          Add Friend
+        </button>
+      </label>
     </div>
   );
 }
