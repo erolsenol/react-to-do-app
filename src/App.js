@@ -6,6 +6,7 @@ import Form from "./components/Form";
 import Number from "./components/Number";
 import A from "./components/A";
 import B from "./components/B";
+import Users from "./components/Users";
 
 function App() {
   const [numberVisible, setNumberVisible] = useState(true);
@@ -21,6 +22,10 @@ function App() {
 
       <A />
       <B />
+
+      <br />
+
+      <Users />
     </div>
   );
 }
