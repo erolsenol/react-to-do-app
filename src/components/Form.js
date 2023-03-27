@@ -1,4 +1,3 @@
-import React from "react";
 import { useState } from "react";
 
 import Header from "./Header";
@@ -6,16 +5,22 @@ import User from "./User";
 
 function Form() {
   const isLogin = true;
+
   const [name, setName] = useState("Erol");
   const [surName] = useState("Senol");
   const [age, setAge] = useState(26);
   const [friends, setFriends] = useState([]);
   const [newFriend, setNewFriend] = useState("");
+  const [form, setForm] = useState({ name: "", surname: "" });
 
   const handleChange = (event) => {
     setNewFriend(event.target.value);
 
     console.log("value is:", event.target.value);
+  };
+
+  const onChangeInput = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
   return (
     <>
@@ -54,6 +59,24 @@ function Form() {
           Add Friend
         </button>
       </label>
+
+      <br />
+      <br />
+
+      <div>
+        Name Surname <br />
+        <input name="name" onChange={onChangeInput} value={form.name}></input>
+        <br />
+        <br />
+        <input
+          name="surname"
+          onChange={onChangeInput}
+          value={form.surname}
+        ></input>
+        <br />
+        <br />
+        {form.name} {form.surname}
+      </div>
     </>
   );
 }
