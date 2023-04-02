@@ -1,41 +1,156 @@
 import "./App.css";
 
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-
-import About from "./pages/About";
-import Home from "./pages/Home";
-import Users from "./pages/Users";
-import User from "./pages/User";
-import Error404 from "./pages/Error404";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 
 function App() {
   return (
-    <Router>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/users">Users</Link>
-            </li>
-          </ul>
-        </nav>
+    <div>
+      <h1>Any place in your app!</h1>
+      <Formik
+        initialValues={{
+          firstName: "",
+          lastName: "",
+          email: "",
+          password: "",
+          gender: "male",
+          hobies: [],
+          country: "",
+        }}
+        validate={(values) => {
+          const errors = {};
+          console.log("values", values);
+          if (!values.email) {
+            errors.email = "Required";
+          } else if (
+            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+          ) {
+            errors.email = "Invalid email address";
+          }
+          if (!values.password) {
+            errors.password = "Required";
+          }
+          console.log("errors", errors);
+          return errors;
+        }}
+        onSubmit={(values, { setSubmitting }) => {
+          console.log("values", values);
+          setTimeout(() => {
+            alert(JSON.stringify(values, null, 2));
+            setSubmitting(false);
+          }, 400);
+        }}
+      >
+        {({ isSubmitting, handleSubmit, handleChange, values }) => (
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="firstName">firstName</label>
+            <input name="firstName" onChange={handleChange} />
 
-        <Routes>
-          <Route exact path="/" Component={Home}></Route>
-          <Route path="/about" Component={About}></Route>
-          <Route path="/users" Component={Users}>
-            <Route path="/users/:id" Component={User}></Route>
-          </Route>
-          <Route path="*" Component={Error404}></Route>
-        </Routes>
-      </div>
-    </Router>
+            <br />
+            <br />
+
+            <label htmlFor="lastName">lastName</label>
+            <input name="lastName" onChange={handleChange} />
+
+            <br />
+            <br />
+
+            <label htmlFor="password">Password</label>
+            <input name="password" onChange={handleChange} />
+            <ErrorMessage name="password" component="div" />
+
+            <br />
+            <br />
+
+            <label htmlFor="email">Email</label>
+            <input name="email" onChange={handleChange} />
+            <ErrorMessage name="email" component="div" />
+
+            <br />
+            <br />
+
+            <span>Male</span>
+            <input
+              type="radio"
+              name="gender"
+              value="male"
+              checked={values.gender === "male"}
+              onChange={handleChange}
+            />
+
+            <span>Famale</span>
+            <input
+              type="radio"
+              name="gender"
+              value="famale"
+              onChange={handleChange}
+            />
+
+            <br />
+            <br />
+
+            <div>
+              <input
+                type="checkbox"
+                name="hobies"
+                value="football"
+                onChange={handleChange}
+              />
+              Football
+            </div>
+
+            <div>
+              <input
+                type="checkbox"
+                name="hobies"
+                value="cinema"
+                onChange={handleChange}
+              />
+              Cinema
+            </div>
+
+            <div>
+              <input
+                type="checkbox"
+                name="hobies"
+                value="photography"
+                onChange={handleChange}
+              />
+              Photography
+            </div>
+
+            <br />
+            <br />
+
+            <select name="country" onChange={handleChange}>
+              <option value="tr">Turkey</option>
+              <option value="en">England</option>
+              <option value="usa">USA</option>
+            </select>
+
+            <br />
+            <br />
+
+            <button type="submit" disabled={isSubmitting}>
+              Submit
+            </button>
+
+            <br />
+            {JSON.stringify(values)}
+          </form>
+          // <Form>
+          //   <Field type="email" name="email" />
+          //   <ErrorMessage name="email" component="div" />
+          //   <br />
+          //   <Field type="password" name="password" />
+          //   <ErrorMessage name="password" component="div" />
+          //   <br />
+          //   <button type="submit" disabled={isSubmitting}>
+          //     Submit
+          //   </button>
+          // </Form>
+        )}
+      </Formik>
+    </div>
   );
 }
 
