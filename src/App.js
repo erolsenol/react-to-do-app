@@ -1,155 +1,154 @@
 import "./App.css";
 
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, useFormik, ErrorMessage } from "formik";
 
 function App() {
+  const { handleChange, handleSubmit, isSubmitting, values } = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      gender: "male",
+      hobies: [],
+      country: "",
+    },
+    onSubmit: (values, { setSubmitting }) => {
+      console.log("values", values);
+      setTimeout(() => {
+        alert(JSON.stringify(values, null, 2));
+        setSubmitting(false);
+      }, 400);
+    },
+    validate: (values) => {
+      const errors = {};
+      console.log("values", values);
+      if (!values.email) {
+        errors.email = "Required";
+      } else if (
+        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+      ) {
+        errors.email = "Invalid email address";
+      }
+      if (!values.password) {
+        errors.password = "Required";
+      }
+      console.log("errors", errors);
+      return errors;
+    },
+  });
   return (
     <div>
       <h1>Any place in your app!</h1>
-      <Formik
-        initialValues={{
-          firstName: "",
-          lastName: "",
-          email: "",
-          password: "",
-          gender: "male",
-          hobies: [],
-          country: "",
-        }}
-        validate={(values) => {
-          const errors = {};
-          console.log("values", values);
-          if (!values.email) {
-            errors.email = "Required";
-          } else if (
-            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-          ) {
-            errors.email = "Invalid email address";
-          }
-          if (!values.password) {
-            errors.password = "Required";
-          }
-          console.log("errors", errors);
-          return errors;
-        }}
-        onSubmit={(values, { setSubmitting }) => {
-          console.log("values", values);
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 400);
-        }}
-      >
-        {({ isSubmitting, handleSubmit, handleChange, values }) => (
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="firstName">firstName</label>
-            <input name="firstName" onChange={handleChange} />
+      {
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="firstName">firstName</label>
+          <input name="firstName" onChange={handleChange} />
 
-            <br />
-            <br />
+          <br />
+          <br />
 
-            <label htmlFor="lastName">lastName</label>
-            <input name="lastName" onChange={handleChange} />
+          <label htmlFor="lastName">lastName</label>
+          <input name="lastName" onChange={handleChange} />
 
-            <br />
-            <br />
+          <br />
+          <br />
 
-            <label htmlFor="password">Password</label>
-            <input name="password" onChange={handleChange} />
-            <ErrorMessage name="password" component="div" />
+          <label htmlFor="password">Password</label>
+          <input name="password" onChange={handleChange} />
+          {/* <ErrorMessage name="password" component="div" /> */}
 
-            <br />
-            <br />
+          <br />
+          <br />
 
-            <label htmlFor="email">Email</label>
-            <input name="email" onChange={handleChange} />
-            <ErrorMessage name="email" component="div" />
+          <label htmlFor="email">Email</label>
+          <input name="email" onChange={handleChange} />
+          {/* <ErrorMessage name="email" component="div" /> */}
 
-            <br />
-            <br />
+          <br />
+          <br />
 
-            <span>Male</span>
+          <span>Male</span>
+          <input
+            type="radio"
+            name="gender"
+            value="male"
+            checked={values.gender === "male"}
+            onChange={handleChange}
+          />
+
+          <span>Famale</span>
+          <input
+            type="radio"
+            name="gender"
+            value="famale"
+            onChange={handleChange}
+          />
+
+          <br />
+          <br />
+
+          <div>
             <input
-              type="radio"
-              name="gender"
-              value="male"
-              checked={values.gender === "male"}
+              type="checkbox"
+              name="hobies"
+              value="football"
               onChange={handleChange}
             />
+            Football
+          </div>
 
-            <span>Famale</span>
+          <div>
             <input
-              type="radio"
-              name="gender"
-              value="famale"
+              type="checkbox"
+              name="hobies"
+              value="cinema"
               onChange={handleChange}
             />
+            Cinema
+          </div>
 
-            <br />
-            <br />
+          <div>
+            <input
+              type="checkbox"
+              name="hobies"
+              value="photography"
+              onChange={handleChange}
+            />
+            Photography
+          </div>
 
-            <div>
-              <input
-                type="checkbox"
-                name="hobies"
-                value="football"
-                onChange={handleChange}
-              />
-              Football
-            </div>
+          <br />
+          <br />
 
-            <div>
-              <input
-                type="checkbox"
-                name="hobies"
-                value="cinema"
-                onChange={handleChange}
-              />
-              Cinema
-            </div>
+          <select name="country" onChange={handleChange}>
+            <option value="tr">Turkey</option>
+            <option value="en">England</option>
+            <option value="usa">USA</option>
+          </select>
 
-            <div>
-              <input
-                type="checkbox"
-                name="hobies"
-                value="photography"
-                onChange={handleChange}
-              />
-              Photography
-            </div>
+          <br />
+          <br />
 
-            <br />
-            <br />
+          <button type="submit" disabled={isSubmitting}>
+            Submit
+          </button>
 
-            <select name="country" onChange={handleChange}>
-              <option value="tr">Turkey</option>
-              <option value="en">England</option>
-              <option value="usa">USA</option>
-            </select>
-
-            <br />
-            <br />
-
-            <button type="submit" disabled={isSubmitting}>
-              Submit
-            </button>
-
-            <br />
-            {JSON.stringify(values)}
-          </form>
-          // <Form>
-          //   <Field type="email" name="email" />
-          //   <ErrorMessage name="email" component="div" />
-          //   <br />
-          //   <Field type="password" name="password" />
-          //   <ErrorMessage name="password" component="div" />
-          //   <br />
-          //   <button type="submit" disabled={isSubmitting}>
-          //     Submit
-          //   </button>
-          // </Form>
-        )}
-      </Formik>
+          <br />
+          {JSON.stringify(values)}
+        </form>
+        // <Form>
+        //   <Field type="email" name="email" />
+        //   <ErrorMessage name="email" component="div" />
+        //   <br />
+        //   <Field type="password" name="password" />
+        //   <ErrorMessage name="password" component="div" />
+        //   <br />
+        //   <button type="submit" disabled={isSubmitting}>
+        //     Submit
+        //   </button>
+        // </Form>
+      }
     </div>
   );
 }
