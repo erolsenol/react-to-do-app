@@ -1,5 +1,13 @@
+import React from "react";
+
 function Header(props) {
-  return <div>Hello i am {props.name}</div>;
+  console.log("header reReader");
+  return (
+    <>
+      <div>Hello i am {props.number}</div>
+      <div>data {JSON.stringify(props.data)}</div>
+    </>
+  );
 }
 
-export default Header;
+export default React.memo(Header);
