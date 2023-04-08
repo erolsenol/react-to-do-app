@@ -1,9 +1,8 @@
 import "./App.css";
 
-import { useFormik } from "formik";
+import { Formik, useFormik, ErrorMessage } from "formik";
 
-import validationSchema from "./plugins/yup";
-
+//Use Form in Formik
 function App() {
   const { handleChange, handleSubmit, isSubmitting, values } = useFormik({
     initialValues: {
@@ -11,7 +10,6 @@ function App() {
       lastName: "",
       email: "",
       password: "",
-      passwordConfirm: "",
       gender: "male",
       hobies: [],
       country: "",
@@ -23,23 +21,22 @@ function App() {
         setSubmitting(false);
       }, 400);
     },
-    validationSchema,
-    // validate: (values) => {
-    //   const errors = {};
-    //   console.log("values", values);
-    //   if (!values.email) {
-    //     errors.email = "Required";
-    //   } else if (
-    //     !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-    //   ) {
-    //     errors.email = "Invalid email address";
-    //   }
-    //   if (!values.password) {
-    //     errors.password = "Required";
-    //   }
-    //   console.log("errors", errors);
-    //   return errors;
-    // },
+    validate: (values) => {
+      const errors = {};
+      console.log("values", values);
+      if (!values.email) {
+        errors.email = "Required";
+      } else if (
+        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+      ) {
+        errors.email = "Invalid email address";
+      }
+      if (!values.password) {
+        errors.password = "Required";
+      }
+      console.log("errors", errors);
+      return errors;
+    },
   });
   return (
     <div>
@@ -61,12 +58,6 @@ function App() {
           <label htmlFor="password">Password</label>
           <input name="password" onChange={handleChange} />
           {/* <ErrorMessage name="password" component="div" /> */}
-
-          <br />
-          <br />
-
-          <label htmlFor="passwordConfirm">Confirm Password</label>
-          <input name="passwordConfirm" onChange={handleChange} />
 
           <br />
           <br />
