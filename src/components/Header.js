@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 
-function Header(props) {
-  console.log("header reReader");
+import ThemeContext from "../context/ThemeContext";
+
+function Header() {
+  const { theme, setTheme } = useContext(ThemeContext);
+
   return (
-    <>
-      <div>Hello i am {props.number}</div>
-      <div>data {JSON.stringify(props.data)}</div>
-    </>
+    <div>
+      Active Theme: {theme}
+      <button
+        onClick={() => {
+          setTheme(theme === "light" ? "dark" : "light");
+        }}
+      >
+        Change Theme
+      </button>
+    </div>
   );
 }
 
