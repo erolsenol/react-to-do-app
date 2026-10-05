@@ -1,19 +1,16 @@
-# React to-do example
+# React To-do App
 
-An older React to-do application built with Create React App.
+A small, local-first to-do list built with React, TypeScript, and Vite. Add, complete, and remove tasks; the list is stored in the browser's local storage. No account or server is required.
 
-> **Status:** Historical example; currently not actively maintained.
+## Run locally
 
-## Local commands
-
-These commands reflect the repository scripts. This historical project has not been validated against current runtimes.
+Requires Node.js 22.12 or newer.
 
 ```sh
-npm install
-npm run start
-npm run build
-npm run test
+npm ci
+npm run dev
 ```
-## Use and maintenance
 
-This repository is retained as a public record of earlier work. Dependencies and third-party services may have changed. Review the source and configuration before running it. No license is granted unless a `LICENSE` file is present.
+Run `npm test`, `npm run build`, and `npm audit --audit-level=high` before publishing changes. The older Create React App experiments remain under `legacy/` for reference and are not part of the current build.
+
+No license is granted in this repository.
