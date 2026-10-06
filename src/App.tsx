@@ -1,34 +1,16 @@
 import { useState, type FormEvent } from 'react';
 
-interface Todo {
-  readonly id: string;
-  readonly title: string;
-  readonly completed: boolean;
-}
-
-const storageKey = 'erolsenol.todos.v1';
-
-function readTodos(): Todo[] {
-  try {
-    const value: unknown = JSON.parse(localStorage.getItem(storageKey) ?? '[]');
-    if (!Array.isArray(value)) return [];
-    return value.filter((item): item is Todo =>
-      typeof item === 'object' && item !== null &&
-      typeof item.id === 'string' && typeof item.title === 'string' &&
-      typeof item.completed === 'boolean');
-  } catch {
-    return [];
-  }
-}
+import { readTodos, writeTodos, type Todo } from './todos';
 
 export default function App() {
   const [todos, setTodos] = useState<Todo[]>(readTodos);
   const [draft, setDraft] = useState('');
+  const [storageError, setStorageError] = useState(false);
   const remaining = todos.filter((todo) => !todo.completed).length;
 
   function save(next: Todo[]) {
     setTodos(next);
-    localStorage.setItem(storageKey, JSON.stringify(next));
+    setStorageError(!writeTodos(next));
   }
 
   function addTodo(event: FormEvent<HTMLFormElement>) {
@@ -54,6 +36,7 @@ export default function App() {
         <label htmlFor="new-todo">New task</label>
         <div><input id="new-todo" value={draft} onChange={(event) => setDraft(event.target.value)} placeholder="What needs doing?" maxLength={200} /><button type="submit">Add task</button></div>
       </form>
+      {storageError && <p role="alert">Tasks are available in this tab, but could not be saved. They may be lost when you reload.</p>}
       <section aria-label="Tasks">
         <div className="list-heading"><h2>Tasks</h2><span>{remaining} remaining</span></div>
         {todos.length === 0 ? <p className="empty">Your list is clear. Add a task to get started.</p> :
